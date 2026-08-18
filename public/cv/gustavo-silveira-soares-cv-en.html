@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gustavo Silveira Soares | Resume</title>
+    <style>
+      :root {
+        --bg: #07121f;
+        --panel: #101d2a;
+        --primary: #22d3ee;
+        --secondary: #7c3aed;
+        --text: #e5eef7;
+        --muted: #9db0c5;
+        --line: rgba(255,255,255,0.12);
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(135deg, var(--bg), #0b1727 60%, #111827);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 980px;
+        margin: 40px auto;
+        padding: 32px;
+        background: rgba(16, 29, 42, 0.92);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+      }
+
+      h1, h2, h3, p { margin: 0 0 14px; }
+      h1 {
+        font-size: 2.4rem;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        color: var(--primary);
+        font-size: 1.08rem;
+        font-weight: 700;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 24px;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1.4fr 0.8fr;
+        gap: 24px;
+      }
+
+      .card {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 18px;
+        margin-bottom: 18px;
+      }
+
+      h2 {
+        font-size: 1.25rem;
+        letter-spacing: 0.04em;
+        color: var(--primary);
+        margin-bottom: 12px;
+      }
+
+      .role {
+        font-weight: 700;
+        font-size: 1.05rem;
+      }
+
+      .company {
+        color: #dceafa;
+        font-weight: 600;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      li { margin-bottom: 8px; }
+
+      .badge-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .badge {
+        display: inline-block;
+        background: rgba(34, 211, 238, 0.12);
+        border: 1px solid rgba(34, 211, 238, 0.35);
+        color: var(--primary);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+      }
+
+      @media (max-width: 760px) {
+        .container { padding: 22px; margin: 20px 12px; }
+        .topbar, .grid { display: block; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="topbar">
+        <div>
+          <h1>Gustavo Silveira Soares</h1>
+          <div class="subtitle">Full Stack Developer</div>
+        </div>
+        <div class="meta">
+          Sorocaba, SP<br />
+          gustavosilveirasoares1012@gmail.com<br />
+          linkedin.com/in/gustavo-silveira-soares
+        </div>
+      </div>
+
+      <div class="grid">
+        <main>
+          <section class="card">
+            <h2>Professional Summary</h2>
+            <p>
+              Full Stack Developer focused on building modern, functional and scalable web applications.
+              I have experience in frontend development with React and TypeScript, as well as API
+              integration, software architecture and practical business-focused solutions.
+            </p>
+            <p>
+              I also work on projects involving IoT, automation and real-time monitoring, always aiming to
+              combine technology, performance and a strong user experience.
+            </p>
+          </section>
+
+          <section class="card">
+            <h2>Experience</h2>
+
+            <div>
+              <div class="role">Technical Support</div>
+              <div class="company">Beltis</div>
+              <div class="meta">Jan 2026 - Present</div>
+              <ul>
+                <li>Support for critical internal applications linked to financial processes.</li>
+                <li>Investigation and resolution of incidents through log analysis and technical diagnosis.</li>
+                <li>Bridge between support and development teams with structured bug reporting.</li>
+              </ul>
+              <div class="badge-wrap">
+                <span class="badge">Linux</span>
+                <span class="badge">Windows</span>
+                <span class="badge">Power BI</span>
+                <span class="badge">Logs</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 16px;">
+              <div class="role">Full Stack Developer</div>
+              <div class="company">2RP</div>
+              <div class="meta">Mar 2025 - Jan 2026</div>
+              <ul>
+                <li>Development and maintenance of web applications using React and Node.js.</li>
+                <li>Implementation of learning modules in a Duolingo-inspired platform.</li>
+                <li>Development of an agricultural monitoring system using IoT sensors and MQTT communication.</li>
+              </ul>
+              <div class="badge-wrap">
+                <span class="badge">React</span>
+                <span class="badge">React Native</span>
+                <span class="badge">Node.js</span>
+                <span class="badge">AWS</span>
+                <span class="badge">MQTT</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <h2>Education</h2>
+            <div class="role">Technologist in Software Development</div>
+            <div class="company">SENAI, Sorocaba - SP</div>
+            <div class="meta">Completed: Jan 2025</div>
+            <p>Technical training focused on modern web development, software architecture and best programming practices.</p>
+          </section>
+        </main>
+
+        <aside>
+          <section class="card">
+            <h2>Skills</h2>
+            <div class="badge-wrap">
+              <span class="badge">React</span>
+              <span class="badge">TypeScript</span>
+              <span class="badge">Node.js</span>
+              <span class="badge">JavaScript</span>
+              <span class="badge">HTML</span>
+              <span class="badge">CSS</span>
+              <span class="badge">REST APIs</span>
+              <span class="badge">SQL</span>
+              <span class="badge">IoT</span>
+              <span class="badge">MQTT</span>
+              <span class="badge">AWS</span>
+              <span class="badge">Git</span>
+            </div>
+          </section>
+
+          <section class="card">
+            <h2>Featured Projects</h2>
+            <ul>
+              <li>Agricultural monitoring system with sensors and real-time dashboard.</li>
+              <li>Learning platform inspired by Duolingo with mobile navigation and service integration.</li>
+              <li>Personal portfolio built with React and TypeScript.</li>
+            </ul>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>

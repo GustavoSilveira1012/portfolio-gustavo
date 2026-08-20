@@ -13,10 +13,10 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: 1,
-    title: 'Agência de Marketing Digital',
+    title: 'Positivus landing page',
     description: 'Landing page para agência de marketing digital com foco em crescimento e presença online.',
     longDescription: 'Landing page responsiva para uma agência de marketing digital, apresentando serviços de SEO, PPC, redes sociais, criação de conteúdo, cases de sucesso e chamadas para conversão.',
-    image: 'https://asimov-test-gustavo-soares.vercel.app/img/megafone.png',
+    image: '/Captura de tela 2026-08-20 160749.png',
     technologies: ['HTML', 'CSS', 'JavaScript', 'Marketing Digital', 'SEO'],
     github: 'https://github.com/GustavoSilveira1012',
     demo: 'https://asimov-test-gustavo-soares.vercel.app/',
@@ -24,10 +24,10 @@ export const projects: Project[] = [
   },
   {
     id: 2,
-    title: 'Asimov Academy',
+    title: 'Landing page Python',
     description: 'Landing page para curso de Python e inteligência artificial com foco em projetos reais.',
     longDescription: 'Landing page educacional com proposta de curso prático de Python e IA, destacando trilha de aprendizado, comunidade, carga horária, benefícios e chamadas para inscrição.',
-    image: 'https://asimov-test-gustavo-soares-43za.vercel.app/favicon.svg',
+    image: '/Captura de tela 2026-08-20 160745.png',
     technologies: ['HTML', 'CSS', 'JavaScript', 'Python', 'IA'],
     github: 'https://github.com/GustavoSilveira1012',
     demo: 'https://asimov-test-gustavo-soares-43za.vercel.app/',

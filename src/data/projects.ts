@@ -18,7 +18,7 @@ export const projects: Project[] = [
     longDescription: 'Sistema completo de monitoramento agrícola desenvolvido com React, Node.js e MQTT. Integra sensores de temperatura e umidade para coleta de dados em tempo real, oferecendo dashboard interativo para acompanhamento de plantações.',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop',
     technologies: ['React', 'Node.js', 'MQTT', 'IoT Sensors', 'APIs REST', 'SQL'],
-    github: 'https://github.com/GustavoSilveira1012',
+    github: 'https://github.com/RyanALO/PI3-Sistema-Inteligente-para-o-Agronegocio',
     demo: '#',
     category: 'iot',
   },
@@ -41,7 +41,7 @@ export const projects: Project[] = [
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop',
     technologies: ['Node.js', 'Express', 'React', 'TypeScript', 'PostgreSQL', 'Prisma'],
     github: 'https://github.com/GustavoSilveira1012/Sistema_Freelancer',
-    demo: '#',
+    demo: 'https://sistema-freelancer-taupe.vercel.app/',
     category: 'dashboard',
   },
 ]

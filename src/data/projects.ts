@@ -38,7 +38,7 @@ export const projects: Project[] = [
     title: 'FreelaFlow',
     description: 'Sistema full stack para gestão de freelancers, clientes, projetos e tarefas.',
     longDescription: 'MVP para centralizar o fluxo operacional de freelancers, com autenticação JWT, controle de clientes, projetos e tarefas, dashboard com métricas de receita e produtividade e exportação de relatórios em PDF.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop',
+    image: '/FreelaFlow.png',
     technologies: ['Node.js', 'Express', 'React', 'TypeScript', 'PostgreSQL', 'Prisma'],
     github: 'https://github.com/GustavoSilveira1012/Sistema_Freelancer',
     demo: 'https://sistema-freelancer-taupe.vercel.app/',

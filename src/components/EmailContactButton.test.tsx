@@ -125,7 +125,7 @@ describe('EmailContactButton Component', () => {
       expect(href).toContain(encodeURIComponent(subject))
       expect(href).toContain(encodeURIComponent(body))
       // Should not contain raw special characters in the mailto part
-      expect(href).not.toMatch(/\?.*\&\s/) // Should not have & followed by space
+      expect(href).not.toMatch(/\?.*&\s/) // Should not have & followed by space
     })
   })
 

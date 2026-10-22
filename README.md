@@ -1,55 +1,60 @@
-# Gustavo OS — Portfolio interativo
+# Gustavo OS 2.0 — portfólio interativo
 
-Portfolio profissional de Gustavo Silveira Soares, reconstruido como uma experiencia de **desktop OS** no navegador.
+Portfólio profissional de Gustavo Silveira Soares, apresentado como uma experiência de desktop no navegador.
 
-## Design
+## Identidade e interface
 
-Inspirado no conceito de portfolio como sistema operacional apresentado por [Jonathan Bergamo](https://github.com/jonabergamo/jonathanbergamo). A implementacao foi escrita especificamente para este repositorio: identidade, CSS, conteudo e componentes proprios. Nenhum codigo ou asset de terceiros foi copiado.
+- Área de trabalho com atalhos, menu Iniciar, barra de tarefas, relógio e alternância de tema.
+- Janelas que podem ser abertas, minimizadas, maximizadas, movidas e redimensionadas no desktop.
+- Navegação móvel com uma janela por vez.
+- Retrato original baseado na foto do Gustavo, com profundidade visual em CSS.
+- Widgets de clima de Sorocaba (Open-Meteo) e estatísticas públicas do GitHub.
 
-## Funcionalidades
+## Projetos e estudos de caso
 
-- Area de trabalho com atalhos e menu Iniciar
-- Janelas com foco, arrastar, redimensionar, minimizar, maximizar e fechar (desktop)
-- Barra de tarefas com relogio, atalhos, reset de layout e alternancia de tema
-- Layout mobile com navegacao inferior e visualizacao de uma janela por vez
-- Secoes Sobre, Projetos, Experiencia, Tecnologias, Formacao, Contato e Terminal
-- Filtros de projetos, links para GitHub/demos, curriculos PT/EN e contatos reais
-- Avatar original com profundidade e movimento 3D via CSS; nao depende de assets de terceiros
-- Widget de clima atual de Sorocaba (Open-Meteo) com tratamento de erros
-- Widget GitHub com numeros publicos e fallback caso a API falhe
-- Suporte a preferencia por movimento reduzido
+Cada estudo de caso apresenta contexto, objetivo, escopo documentado, captura de tela e links para o repositório e a demonstração.
+
+- **Positivus** e **Python + IA** são as duas partes de um teste técnico para a Asimov Academy. O README do repositório registra o formato do desafio e decisões de implementação.
+- **FreelaFlow** é descrito no próprio README como um MVP para centralizar clientes, projetos e tarefas de freelancers. A captura disponível mostra o dashboard sem dados.
+
+Os estudos não atribuem métricas de negócio aos projetos. Percentuais e números promocionais visíveis nas páginas demonstrativas são tratados como conteúdo do layout. O estado vazio do dashboard do FreelaFlow também não é apresentado como resultado de uso.
+
+Os detalhes e as capturas de tela são mantidos em src/data/projects.ts e public/.
+
+## Acessibilidade e mobile
+
+- Janelas nomeadas com relações explícitas aos títulos.
+- Foco movido para uma janela ao abrir e restaurado ao fechar; minimizar devolve foco à barra de tarefas.
+- Escape fecha o menu Iniciar ou a janela ativa.
+- Botões, filtros, links externos e entrada do terminal têm nomes acessíveis.
+- Filtros anunciam a contagem atual de projetos.
+- Animações respeitam prefers-reduced-motion.
+- No mobile, as janelas usam uma área de leitura rolável e navegação inferior.
 
 ## Tecnologia
 
-React 18, TypeScript, Vite, Tailwind CSS 3 e Lucide React. Sem novas dependencias.
+React 18, TypeScript, Vite, Tailwind CSS 3, Lucide React e Vitest. Não há dependências novas nesta fase.
 
-## Iniciar
+## Executar localmente
 
-```bash
-npm ci
-npm run dev
-```
+Instale dependências com npm ci e inicie com npm run dev.
 
-## Validar
+## Verificar
 
-```bash
-npm run build
-npm run lint
-npm run test:run
-```
+Execute npm run build, npm run lint e npm run test:run.
 
-GitHub Actions executa automaticamente build e testes em Pull Requests. Confira o resultado antes de realizar o merge. A fase 2 ainda requer verificacao visual em desktop e dispositivos moveis.
+GitHub Actions executa build e testes em pull requests. Confira também a prévia do Vercel em desktop e mobile antes de realizar o merge.
 
-## Conteudo
+## Organização do conteúdo
 
-- `src/data/projects.ts` — projetos
-- `src/data/experience.ts` — experiencia
-- `src/data/technologies.ts` — tecnologias
-- `src/data/certificates.ts` — certificados
-- `src/utils/constants.ts` — links sociais, contato, curriculos
-- `src/components/PortfolioDesktop.tsx` — interacao e janelas
-- `src/components/portfolio-desktop.css` — estilos e adaptacao mobile
+- src/data/projects.ts — projetos, links, capturas e fatos documentados.
+- src/data/experience.ts — experiências e formação.
+- src/data/technologies.ts — tecnologias.
+- src/data/certificates.ts — certificados.
+- src/utils/constants.ts — contatos e links sociais.
+- src/components/PortfolioDesktop.tsx — janelas, navegação e interação.
+- src/components/portfolio-desktop.css — identidade visual e adaptação mobile.
 
-## Creditos
+## Créditos
 
-Conceito de experiencia desktop inspirado no portfolio de Jonathan Bergamo. Layout e codigo desta implementacao adaptados ao portfolio de Gustavo.
+O conceito de experiência desktop foi inspirado no portfólio de [Jonathan Bergamo](https://github.com/jonabergamo/jonathanbergamo). O layout, o conteúdo e os ativos desta implementação foram criados para o portfólio do Gustavo.

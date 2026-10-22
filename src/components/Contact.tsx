@@ -60,9 +60,9 @@ export default function Contact() {
         setFormData({ name: '', email: '', message: '' })
         setTimeout(() => setSubmitted(false), 6000)
       } else {
-        const data = await response.json()
-        if (Object.prototype.hasOwnProperty.call(data, 'errors')) {
-          setError(data.errors.map((e: any) => e.message).join(', '))
+        const data = await response.json() as { errors?: Array<{ message: string }> }
+        if (Array.isArray(data.errors)) {
+          setError(data.errors.map((error) => error.message).join(', '))
         } else {
           setError('Ops! Falha ao enviar. Tente pelo WhatsApp ou email diretamente.')
         }

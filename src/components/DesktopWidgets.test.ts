@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getWeatherLabel } from './DesktopWidgets'
+import { getWeatherLabel } from '../utils/weather'
 
 describe('getWeatherLabel', () => {
   it('maps WMO codes to Portuguese weather summaries', () => {

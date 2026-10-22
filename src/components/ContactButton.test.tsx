@@ -738,7 +738,7 @@ describe('ContactButton - Property-Based Tests (fast-check)', () => {
         addListener: vi.fn(),
         removeListener: vi.fn(),
         dispatchEvent: vi.fn(),
-      })) as any
+      })) as unknown as typeof window.matchMedia
 
       render(
         <ContactButton
@@ -774,7 +774,7 @@ describe('ContactButton - Property-Based Tests (fast-check)', () => {
         addListener: vi.fn(),
         removeListener: vi.fn(),
         dispatchEvent: vi.fn(),
-      })) as any
+      })) as unknown as typeof window.matchMedia
 
       render(
         <ContactButton
@@ -810,7 +810,7 @@ describe('ContactButton - Property-Based Tests (fast-check)', () => {
         addListener: vi.fn(),
         removeListener: vi.fn(),
         dispatchEvent: vi.fn(),
-      })) as any
+      })) as unknown as typeof window.matchMedia
 
       const href = 'mailto:test@example.com'
       render(
@@ -854,7 +854,7 @@ describe('ContactButton - Property-Based Tests (fast-check)', () => {
           addListener: vi.fn(),
           removeListener: vi.fn(),
           dispatchEvent: vi.fn(),
-        })) as any
+        })) as unknown as typeof window.matchMedia
 
         const generator = fc.integer({ min: 1, max: 5 })
 
@@ -918,7 +918,7 @@ describe('ContactButton - Property-Based Tests (fast-check)', () => {
           addListener: vi.fn(),
           removeListener: vi.fn(),
           dispatchEvent: vi.fn(),
-        })) as any
+        })) as unknown as typeof window.matchMedia
 
         render(
           <ContactButton
@@ -956,7 +956,7 @@ describe('ContactButton - Property-Based Tests (fast-check)', () => {
         addListener: vi.fn(),
         removeListener: vi.fn(),
         dispatchEvent: vi.fn(),
-      })) as any
+      })) as unknown as typeof window.matchMedia
 
       render(
         <ContactButton
@@ -991,7 +991,7 @@ describe('ContactButton - Property-Based Tests (fast-check)', () => {
           addListener: vi.fn(),
           removeListener: vi.fn(),
           dispatchEvent: vi.fn(),
-        })) as any
+        })) as unknown as typeof window.matchMedia
 
         const generator = fc.boolean()
 

@@ -14,6 +14,9 @@ Inspirado no conceito de portfolio como sistema operacional apresentado por [Jon
 - Layout mobile com navegacao inferior e visualizacao de uma janela por vez
 - Secoes Sobre, Projetos, Experiencia, Tecnologias, Formacao, Contato e Terminal
 - Filtros de projetos, links para GitHub/demos, curriculos PT/EN e contatos reais
+- Avatar original com profundidade e movimento 3D via CSS; nao depende de assets de terceiros
+- Widget de clima atual de Sorocaba (Open-Meteo) com tratamento de erros
+- Widget GitHub com numeros publicos e fallback caso a API falhe
 - Suporte a preferencia por movimento reduzido
 
 ## Tecnologia
@@ -35,7 +38,7 @@ npm run lint
 npm run test:run
 ```
 
-O build e os testes devem ser executados antes do merge; a interface precisa de uma verificacao visual em desktop e dispositivos moveis.
+GitHub Actions executa automaticamente build e testes em Pull Requests. Confira o resultado antes de realizar o merge. A fase 2 ainda requer verificacao visual em desktop e dispositivos moveis.
 
 ## Conteudo
 

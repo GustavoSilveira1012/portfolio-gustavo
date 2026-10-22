@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type FormEvent } from 'react'
 import {
-  Award, BriefcaseBusiness, Check, ChevronRight, Code2, Download,
+  Award, Briefcase, Check, ChevronRight, Code2, Download,
   ExternalLink, FolderOpen, Github, Grid2X2, Linkedin,
   Mail, MapPin, Maximize2, Minus, Moon, RotateCcw, Send,
   Settings2, Sun, Terminal, UserRound, X,
@@ -36,7 +36,7 @@ type Gesture = {
 const entries = [
   { id: 'about', label: 'Sobre mim', icon: UserRound, subtitle: 'Quem eu sou' },
   { id: 'projects', label: 'Projetos', icon: FolderOpen, subtitle: 'Trabalhos selecionados' },
-  { id: 'experience', label: 'Experiência', icon: BriefcaseBusiness, subtitle: 'Minha trajetória' },
+  { id: 'experience', label: 'Experiência', icon: Briefcase, subtitle: 'Minha trajetória' },
   { id: 'skills', label: 'Tecnologias', icon: Code2, subtitle: 'Ferramentas e stacks' },
   { id: 'certificates', label: 'Formação', icon: Award, subtitle: 'Certificações e estudos' },
   { id: 'contact', label: 'Contato', icon: Mail, subtitle: 'Vamos conversar' },

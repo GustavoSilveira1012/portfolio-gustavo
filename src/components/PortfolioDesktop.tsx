@@ -5,6 +5,8 @@ import {
   Mail, MapPin, Maximize2, Minus, Moon, RotateCcw, Send,
   Settings2, Sun, Terminal, UserRound, X,
 } from 'lucide-react'
+import InteractivePortrait from './InteractivePortrait'
+import { WeatherWidget, GitHubWidget } from './DesktopWidgets'
 import { projects } from '../data/projects'
 import { experiences } from '../data/experience'
 import { technologies } from '../data/technologies'
@@ -305,7 +307,7 @@ export default function PortfolioDesktop() {
     <main className={'os-root ' + (dark ? 'os-dark' : 'os-light')}>
       <div className="os-wallpaper" aria-hidden="true">
         <div className="os-heading-art"><span>SOFTWARE ENGINEER / PORTFOLIO 2026</span><strong>GUSTAVO<br />SILVEIRA<span>.</span></strong><p>Code. Design. Solve.</p></div>
-        <div className="os-portrait"><span className="os-portrait-halo" /><img src="/perfil.jpg" alt="" /></div>
+        <div className="os-portrait"><InteractivePortrait /></div>
         <div className="os-wallpaper-caption">FULL STACK DEVELOPER <span>✳</span> SOROCABA, BR</div>
       </div>
       <div className="os-top-left"><span className="os-dot-online" /> WELCOME TO GUSTAVO OS <span className="os-top-version">v1.0</span></div>
@@ -315,8 +317,9 @@ export default function PortfolioDesktop() {
         ))}
       </nav>
       <aside className="os-widget-area" aria-label="Atalhos e informações">
+        <WeatherWidget />
         <div className="os-widget os-status-widget"><span className="os-eyebrow">STATUS / CURRENTLY</span><strong><span className="os-dot-online" /> Desenvolvendo e aprendendo</strong><p>Full Stack · React · Node.js</p></div>
-        <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" className="os-widget os-github-widget"><Github size={22} /><span><strong>Meus repositórios</strong><small>github.com/GustavoSilveira1012</small></span><ExternalLink size={16} /></a>
+        <GitHubWidget />
       </aside>
       <div className="os-window-layer">
         {entries.filter(({ id }) => windows[id].status === 'open').map(({ id, label, icon: Icon }) => {

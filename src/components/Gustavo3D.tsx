@@ -7,46 +7,72 @@ import { useEffect, useRef } from 'react'
  * the 64x64 reference. Nothing is downloaded at runtime.
  */
 type Part = { position: [number,number,number]; scale: [number,number,number]; color: [number,number,number]; shape?: 'box'|'sphere'; rotation?: number; wave?: boolean }
-const skin: [number,number,number] = [0.75,0.52,0.38]
-const shadow: [number,number,number] = [0.63,0.40,0.29]
-const dark: [number,number,number] = [0.085,0.098,0.115]
-const white: [number,number,number] = [0.89,0.91,0.88]
-const shirt: [number,number,number] = [0.87,0.90,0.88]
-const pants: [number,number,number] = [0.19,0.22,0.25]
-const parts: Part[] = [
-  { position:[0,-.92,0],scale:[.51,.72,.30],color:shirt },
-  { position:[0,-1.61,0],scale:[.48,.27,.32],color:pants },
-  { position:[-.22,-2.11,0],scale:[.20,.55,.24],color:pants },
-  { position:[.22,-2.11,0],scale:[.20,.55,.24],color:pants },
-  { position:[-.23,-2.63,.08],scale:[.23,.12,.36],color:dark },
-  { position:[.23,-2.63,.08],scale:[.23,.12,.36],color:dark },
-  { position:[0,-.28,0],scale:[.16,.28,.17],color:skin },
-  { position:[0,.33,.02],scale:[.47,.61,.40],color:skin },
-  { position:[0,.83,-.03],scale:[.47,.22,.43],color:dark },
-  { position:[-.29,1.0,.05],scale:[.23,.14,.37],color:dark,rotation:-.18 },
-  { position:[.14,1.00,.0],scale:[.40,.13,.40],color:dark,rotation:.10 },
-  { position:[-.43,.47,.02],scale:[.10,.32,.28],color:dark,rotation:-.22 },
-  { position:[.43,.44,-.05],scale:[.10,.31,.28],color:dark },
-  { position:[-.49,.29,.04],scale:[.09,.14,.14],color:skin },
-  { position:[.49,.29,.04],scale:[.09,.14,.14],color:skin },
-  { position:[-.17,.39,.39],scale:[.056,.044,.018],color:dark },
-  { position:[.18,.39,.39],scale:[.056,.044,.018],color:dark },
-  { position:[-.18,.51,.395],scale:[.10,.035,.025],color:dark,rotation:.08 },
-  { position:[.19,.51,.395],scale:[.10,.035,.025],color:dark,rotation:-.08 },
-  { position:[0,.21,.42],scale:[.07,.12,.075],color:shadow },
-  { position:[0,.015,.385],scale:[.20,.025,.025],color:shadow },
-  { position:[-.30,-.53,.18],scale:[.21,.15,.12],color:white,rotation:-.17 },
-  { position:[.30,-.53,.18],scale:[.21,.15,.12],color:white,rotation:.17 },
-  { position:[0,-.58,.28],scale:[.07,.17,.028],color:[.26,.30,.32] },
-  { position:[-.59,-1.01,0],scale:[.18,.57,.24],color:shirt,rotation:.15 },
-  { position:[-.65,-1.57,.0],scale:[.15,.43,.17],color:skin },
-  { position:[-.65,-1.97,.02],scale:[.15,.17,.14],color:skin },
-  { position:[.60,-.83,0],scale:[.18,.41,.22],color:shirt,wave:true },
-  { position:[.68,-.34,0],scale:[.145,.36,.16],color:skin,wave:true },
-  { position:[.75,.02,.02],scale:[.15,.17,.095],color:skin,wave:true },
-  { position:[.84,.21,.04],scale:[.08,.16,.065],color:skin,wave:true },
-]
+const skin: [number,number,number] = [0.78,0.56,0.43]
+const skinShadow: [number,number,number] = [0.68,0.44,0.34]
+const hair: [number,number,number] = [0.10,0.115,0.14]
+const hairShine: [number,number,number] = [0.16,0.18,0.20]
+const sclera: [number,number,number] = [0.95,0.95,0.92]
+const iris: [number,number,number] = [0.13,0.14,0.16]
+const shirt: [number,number,number] = [0.90,0.92,0.90]
+const shirtFold: [number,number,number] = [0.78,0.84,0.83]
+const pants: [number,number,number] = [0.20,0.24,0.28]
 
+/**
+ * All positions are actual XYZ coordinates. The camera looks toward +Z,
+ * so facial detail must sit OUTSIDE the front surface of the head.
+ * Rounded meshes give the character recognisable facial expression and silhouette.
+ */
+const parts: Part[] = [
+  // Body and shoes
+  { position:[0,-.97,0],scale:[.53,.71,.32],color:shirt,shape:'sphere' },
+  { position:[0,-1.62,0],scale:[.48,.25,.31],color:pants,shape:'sphere' },
+  { position:[-.23,-2.04,0],scale:[.21,.51,.22],color:pants,shape:'sphere' },
+  { position:[.23,-2.04,0],scale:[.21,.51,.22],color:pants,shape:'sphere' },
+  { position:[-.23,-2.54,.14],scale:[.24,.12,.35],color:hair,shape:'sphere' },
+  { position:[.23,-2.54,.14],scale:[.24,.12,.35],color:hair,shape:'sphere' },
+
+  // Neck and head: facial geometry faces the viewer (+Z)
+  { position:[0,-.29,0],scale:[.17,.29,.17],color:skin,shape:'sphere' },
+  { position:[0,.33,.01],scale:[.45,.59,.40],color:skin,shape:'sphere' },
+  { position:[-.45,.26,.03],scale:[.095,.14,.11],color:skin,shape:'sphere' },
+  { position:[.45,.26,.03],scale:[.095,.14,.11],color:skin,shape:'sphere' },
+
+  // Hairstyle from the reference photo: dark swept fringe, fuller on one side
+  { position:[0,.79,-.055],scale:[.46,.22,.42],color:hair,shape:'sphere' },
+  { position:[-.23,.87,.10],scale:[.28,.13,.32],color:hair,shape:'sphere',rotation:-.17 },
+  { position:[.13,.93,.03],scale:[.39,.13,.40],color:hair,shape:'sphere',rotation:.09 },
+  { position:[-.36,.55,.07],scale:[.11,.28,.30],color:hair,shape:'sphere' },
+  { position:[.39,.56,.05],scale:[.09,.24,.29],color:hair,shape:'sphere' },
+  { position:[-.06,.83,.31],scale:[.27,.07,.14],color:hairShine,shape:'sphere',rotation:.08 },
+
+  // Brows and visible eyes positioned in front of the curved head.
+  { position:[-.17,.40,.413],scale:[.105,.062,.033],color:sclera,shape:'sphere' },
+  { position:[.17,.40,.413],scale:[.105,.062,.033],color:sclera,shape:'sphere' },
+  { position:[-.17,.40,.450],scale:[.044,.051,.025],color:iris,shape:'sphere' },
+  { position:[.17,.40,.450],scale:[.044,.051,.025],color:iris,shape:'sphere' },
+  { position:[-.18,.51,.416],scale:[.115,.025,.035],color:hair,shape:'sphere',rotation:.09 },
+  { position:[.18,.51,.416],scale:[.115,.025,.035],color:hair,shape:'sphere',rotation:-.10 },
+  { position:[0,.205,.437],scale:[.072,.122,.087],color:skinShadow,shape:'sphere' },
+  { position:[0,.075,.420],scale:[.16,.021,.026],color:skinShadow,shape:'sphere' },
+  { position:[-.17,.15,.378],scale:[.08,.042,.025],color:skinShadow,shape:'sphere' },
+  { position:[.17,.15,.378],scale:[.08,.042,.025],color:skinShadow,shape:'sphere' },
+
+  // Shirt collar, buttons and seam
+  { position:[-.23,-.51,.25],scale:[.22,.12,.12],color:shirtFold,shape:'sphere',rotation:-.20 },
+  { position:[.23,-.51,.25],scale:[.22,.12,.12],color:shirtFold,shape:'sphere',rotation:.20 },
+  { position:[0,-.69,.325],scale:[.03,.20,.018],color:shirtFold },
+  { position:[0,-.78,.344],scale:[.022,.022,.015],color:hair,shape:'sphere' },
+  { position:[0,-1.06,.345],scale:[.022,.022,.015],color:hair,shape:'sphere' },
+
+  // Resting left arm and an animated raised right arm
+  { position:[-.59,-.91,0],scale:[.18,.49,.21],color:shirt,shape:'sphere',rotation:.16 },
+  { position:[-.66,-1.42,.015],scale:[.15,.37,.16],color:skin,shape:'sphere' },
+  { position:[-.66,-1.82,.04],scale:[.145,.17,.13],color:skin,shape:'sphere' },
+  { position:[.61,-.86,0],scale:[.18,.42,.20],color:shirt,shape:'sphere',wave:true },
+  { position:[.72,-.35,.04],scale:[.14,.36,.15],color:skin,shape:'sphere',wave:true },
+  { position:[.78,.09,.08],scale:[.145,.19,.11],color:skin,shape:'sphere',wave:true },
+  { position:[.85,.27,.08],scale:[.07,.15,.06],color:skin,shape:'sphere',wave:true },
+]
 function geometry(shape: 'box' | 'sphere') {
   if (shape === 'box') {
     const p = [
@@ -90,8 +116,9 @@ void main(){
  v+=uPosition;
  c=cos(uTilt);s=sin(uTilt);
  vec3 rotated=vec3(v.x*c-v.z*s,v.y,v.x*s+v.z*c);
- vec3 camera=rotated+vec3(0.,0.,7.5);
- gl_Position=vec4(camera.x/uAspect,camera.y,camera.z*0.03,1.0+camera.z*0.11);
+ // The previous projection reversed depth: it covered the face with the back of the head.
+ // Keep the camera on +Z and map higher Z to nearer (smaller) depth values.
+ gl_Position=vec4(rotated.x*.64/uAspect,rotated.y*.64+.05,-rotated.z*.12,1.0);
  vNormal=normalize(vec3(aPosition.x*c-aPosition.z*s,aPosition.y,aPosition.x*s+aPosition.z*c));
 }`
 const fs = String.raw`precision mediump float;

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type FormEvent } from 'react'
 import {
   Award, BriefcaseBusiness, Check, ChevronRight, Code2, Download,
-  ExternalLink, FolderOpen, Github, Grid2X2, Laptop, Linkedin,
+  ExternalLink, FolderOpen, Github, Grid2X2, Linkedin,
   Mail, MapPin, Maximize2, Minus, Moon, RotateCcw, Send,
   Settings2, Sun, Terminal, UserRound, X,
 } from 'lucide-react'

@@ -335,3 +335,28 @@
 .os-3d-label strong { font-size:16px; font-weight:900; letter-spacing:.12em; }
 .os-3d-label small { font:700 9px ui-monospace,monospace; letter-spacing:.12em; color:#9be9e2; }
 @media(max-width:760px){.os-3d-label{bottom:6%;right:0;padding:5px 8px}.os-3d-label strong{font-size:10px}.os-3d-label small{font-size:7px}.os-3d-halo{border-width:5px}}
+
+
+/* 2026 polish: reserve distinct screen regions for portrait and widgets. */
+@media (min-width: 1151px) {
+  .os-heading-art { right: 5.2vw; top: 7vh; width: min(45vw, 650px); }
+  .os-heading-art strong { font-size: clamp(48px, 5.1vw, 91px); }
+  .os-heading-art p { font-size: clamp(13px, 1.25vw, 19px); letter-spacing: .1em; }
+  .os-portrait { right: min(25vw, 410px); bottom: 57px; width: min(31vw, 465px); height: min(51vh, 480px); }
+  .os-widget-area { right: 22px; bottom: 118px; width: clamp(246px, 18vw, 310px); gap: 10px; }
+  .os-widget { padding: 13px; }
+  .os-wallpaper-caption { right: 4vw; bottom: 65px; }
+}
+@media (min-width: 761px) and (max-width: 1150px) {
+  .os-portrait { right: 20vw; width: 41vw; bottom: 57px; }
+  .os-heading-art { top: 7vh; right: 3vw; }
+  .os-heading-art p { font-size: 12px; }
+  .os-widget-area { right: 12px; bottom: 86px; width: 225px; }
+  .os-widget { padding: 11px; }
+  .os-wallpaper-caption { display:none; }
+}
+@media (max-width: 760px) {
+  .os-portrait { right: 6vw; width: 62vw; bottom: 86px; height: 42vh; }
+  .os-heading-art { top: 48px; }
+  .os-heading-art p { white-space: normal; font-size: 11px; letter-spacing: .07em; }
+}

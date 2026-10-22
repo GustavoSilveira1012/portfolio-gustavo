@@ -43,7 +43,7 @@ describe('useReducedMotion Hook', () => {
       dispatchEvent: vi.fn(),
     }))
 
-    window.matchMedia = mockMatchMedia as any
+    window.matchMedia = mockMatchMedia as unknown as typeof window.matchMedia
 
     const { result } = renderHook(() => useReducedMotion())
     expect(result.current).toBe(false)
@@ -66,7 +66,7 @@ describe('useReducedMotion Hook', () => {
       dispatchEvent: vi.fn(),
     }))
 
-    window.matchMedia = mockMatchMedia as any
+    window.matchMedia = mockMatchMedia as unknown as typeof window.matchMedia
 
     const { result } = renderHook(() => useReducedMotion())
     expect(result.current).toBe(true)
@@ -90,7 +90,7 @@ describe('useReducedMotion Hook', () => {
       dispatchEvent: vi.fn(),
     }))
 
-    window.matchMedia = mockMatchMedia as any
+    window.matchMedia = mockMatchMedia as unknown as typeof window.matchMedia
 
     renderHook(() => useReducedMotion())
 
@@ -115,7 +115,7 @@ describe('useReducedMotion Hook', () => {
       dispatchEvent: vi.fn(),
     }))
 
-    window.matchMedia = mockMatchMedia as any
+    window.matchMedia = mockMatchMedia as unknown as typeof window.matchMedia
 
     const { unmount } = renderHook(() => useReducedMotion())
     unmount()
@@ -133,7 +133,7 @@ describe('useReducedMotion Hook', () => {
     const originalMatchMedia = window.matchMedia
 
     // Remove matchMedia to simulate unsupported browser
-    ;(window as any).matchMedia = undefined
+    Object.defineProperty(window, 'matchMedia', { configurable: true, writable: true, value: undefined })
 
     const { result } = renderHook(() => useReducedMotion())
 
@@ -160,7 +160,7 @@ describe('useReducedMotion Hook', () => {
       dispatchEvent: vi.fn(),
     }))
 
-    window.matchMedia = mockMatchMedia as any
+    window.matchMedia = mockMatchMedia as unknown as typeof window.matchMedia
 
     renderHook(() => useReducedMotion())
 
@@ -183,7 +183,7 @@ describe('useReducedMotion Hook', () => {
       dispatchEvent: vi.fn(),
     }))
 
-    window.matchMedia = mockMatchMedia as any
+    window.matchMedia = mockMatchMedia as unknown as typeof window.matchMedia
 
     const { result, rerender } = renderHook(() => useReducedMotion())
 

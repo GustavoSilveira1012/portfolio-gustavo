@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type FormEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type FormEvent } from 'react'
 import {
   Award, Briefcase, Check, ChevronRight, Code2, Download,
   ExternalLink, FolderOpen, Github, Grid2X2, Linkedin,
@@ -52,6 +52,19 @@ const initialWindows: Record<WindowId, WindowState> = {
   contact: { status: 'closed', x: 360, y: 154, width: 540, height: 430, z: 10, maximized: false },
   terminal: { status: 'closed', x: 350, y: 175, width: 620, height: 430, z: 10, maximized: false },
 }
+
+function focusNextFrame(target: () => HTMLElement | null) {
+  const focus = () => {
+    const element = target()
+    if (element?.isConnected) element.focus()
+  }
+  if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
+    window.requestAnimationFrame(focus)
+  } else {
+    window.setTimeout(focus, 0)
+  }
+}
+
 const categoryNames = {
   frontend: 'Front-end & interfaces',
   backend: 'Back-end & APIs',
@@ -109,26 +122,46 @@ function ProjectsView() {
   return (
     <div className="os-body">
       <div className="os-section-heading"><div><span className="os-eyebrow">PORTFOLIO / SELECTED WORK</span><h2>Projetos em destaque<span className="os-accent">.</span></h2><p className="os-muted">Produtos, experiências e soluções construídas na prática.</p></div><span className="os-count">{projects.length} projetos</span></div>
-      <div className="os-filters" aria-label="Filtrar projetos">
+      <div className="os-filters" role="group" aria-label="Filtrar projetos">
         {categories.map(({ value, label }) => <button key={value} aria-pressed={filter === value} className={filter === value ? 'os-filter active' : 'os-filter'} onClick={() => setFilter(value)}>{label}</button>)}
       </div>
+      <p className="os-project-result-count" role="status" aria-live="polite" aria-atomic="true">{filtered.length} {filtered.length === 1 ? 'projeto encontrado' : 'projetos encontrados'}</p>
       <div className="os-project-grid">
         {filtered.map((p, index) => (
           <article key={p.id} className="os-project-card">
-            <div className="os-project-media"><img src={p.image} alt={'Prévia do projeto ' + p.title} loading="lazy" /><span className="os-project-index">{String(index + 1).padStart(2, '0')}</span></div>
+            <figure className="os-project-media">
+              <img src={p.image} alt={'Captura do projeto ' + p.title} loading="lazy" />
+              <span className="os-project-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            </figure>
             <div className="os-project-details">
               <div className="os-project-title"><h3>{p.title}</h3><span className="os-category">{p.category}</span></div>
               <p>{p.description}</p>
               <div className="os-tags">{p.technologies.map((technology) => <span key={technology}>{technology}</span>)}</div>
+              <details className="os-case-study">
+                <summary>Ver estudo de caso: {p.title}</summary>
+                <div className="os-case-study-content">
+                  <h4>Contexto</h4>
+                  <p>{p.caseStudy.context}</p>
+                  <h4>Objetivo</h4>
+                  <p>{p.caseStudy.objective}</p>
+                  <h4>Escopo documentado</h4>
+                  <ul>{p.caseStudy.scope.map((item) => <li key={item}>{item}</li>)}</ul>
+                  <p className="os-project-note">{p.caseStudy.note}</p>
+                  <figure className="os-case-study-image">
+                    <img src={p.image} alt={'Captura de tela: ' + p.title} loading="lazy" />
+                    <figcaption>{p.caseStudy.screenshotCaption}</figcaption>
+                  </figure>
+                </div>
+              </details>
               <div className="os-project-actions">
-                {p.github && <a href={p.github} target="_blank" rel="noopener noreferrer"><Github size={16} /> Código <ExternalLink size={13} /></a>}
-                {p.demo && <a href={p.demo} target="_blank" rel="noopener noreferrer"><ExternalLink size={16} /> Ver projeto</a>}
+                {p.github && <a href={p.github} target="_blank" rel="noopener noreferrer" aria-label={'Código de ' + p.title + ' no GitHub (abre em nova aba)'}><Github size={16} aria-hidden="true" /> Código no GitHub <ExternalLink size={13} aria-hidden="true" /></a>}
+                {p.demo && <a href={p.demo} target="_blank" rel="noopener noreferrer" aria-label={p.demoLabel + ' de ' + p.title + ' (abre em nova aba)'}><ExternalLink size={16} aria-hidden="true" /> {p.demoLabel} <ExternalLink size={13} aria-hidden="true" /></a>}
               </div>
             </div>
           </article>
         ))}
       </div>
-      {filtered.length === 0 && <p>Nenhum projeto nesta categoria.</p>}
+      {filtered.length === 0 && <p role="status">Nenhum projeto nesta categoria.</p>}
     </div>
   )
 }
@@ -218,6 +251,7 @@ function TerminalView({ onOpen }: { onOpen: (id: WindowId) => void }) {
       experience: 'Abrindo experiência...',
       contact: 'Abrindo contato...',
     }
+    if (cmd === 'about') onOpen('about')
     if (cmd === 'projects') onOpen('projects')
     if (cmd === 'skills') onOpen('skills')
     if (cmd === 'experience') onOpen('experience')
@@ -230,20 +264,23 @@ function TerminalView({ onOpen }: { onOpen: (id: WindowId) => void }) {
 
 export default function PortfolioDesktop() {
   const [windows, setWindows] = useState<Record<WindowId, WindowState>>(() => structuredClone(initialWindows))
-  const [active, setActive] = useState<WindowId>('about')
+  const [active, setActive] = useState<WindowId | null>('about')
   const [startOpen, setStartOpen] = useState(false)
   const [dark, setDark] = useState(() => { try { return localStorage.getItem('gustavo-os-theme') === 'dark' } catch { return false } })
   const order = useRef(13)
   const gesture = useRef<Gesture | null>(null)
+  const windowElements = useRef<Partial<Record<WindowId, HTMLElement | null>>>({})
+  const returnFocusElements = useRef<Partial<Record<WindowId, HTMLElement | null>>>({})
+  const startMenuRef = useRef<HTMLElement | null>(null)
+  const startButtonRef = useRef<HTMLButtonElement | null>(null)
   useEffect(() => { try { localStorage.setItem('gustavo-os-theme', dark ? 'dark' : 'light') } catch { /* unavailable in private mode */ } }, [dark])
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') { setStartOpen(false) }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+  const closeStartMenu = useCallback(() => {
+    setStartOpen(false)
+    focusNextFrame(() => startButtonRef.current)
   }, [])
-  const openWindow = (id: WindowId) => {
+  const openWindow = (id: WindowId, trigger?: HTMLElement) => {
+    const focusedElement = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null)
+    returnFocusElements.current[id] = startOpen ? startButtonRef.current : focusedElement
     setWindows((previous) => {
       const next = { ...previous }
       if (window.innerWidth <= 760) {
@@ -256,6 +293,7 @@ export default function PortfolioDesktop() {
     })
     setActive(id)
     setStartOpen(false)
+    focusNextFrame(() => windowElements.current[id] ?? null)
   }
   const changeWindow = (id: WindowId, patch: Partial<WindowState>) => {
     setWindows((previous) => ({ ...previous, [id]: { ...previous[id], ...patch } }))
@@ -264,6 +302,45 @@ export default function PortfolioDesktop() {
     if (active !== id) setActive(id)
     setWindows((previous) => ({ ...previous, [id]: { ...previous[id], z: ++order.current } }))
   }
+  const closeWindow = useCallback((id: WindowId) => {
+    setWindows((previous) => ({ ...previous, [id]: { ...previous[id], status: 'closed' } }))
+    if (active === id) {
+      const availableWindows = entries
+        .filter(({ id: otherId }) => otherId !== id && windows[otherId].status === 'open')
+        .sort((left, right) => windows[left.id].z - windows[right.id].z)
+      setActive(availableWindows[availableWindows.length - 1]?.id ?? null)
+    }
+    focusNextFrame(() => {
+      const trigger = returnFocusElements.current[id]
+      return trigger?.isConnected ? trigger : document.getElementById('os-shortcut-' + id)
+    })
+  }, [active, windows])
+  const minimizeWindow = (id: WindowId) => {
+    changeWindow(id, { status: 'minimized' })
+    if (active === id) {
+      const availableWindows = entries
+        .filter(({ id: otherId }) => otherId !== id && windows[otherId].status === 'open')
+        .sort((left, right) => windows[left.id].z - windows[right.id].z)
+      setActive(availableWindows[availableWindows.length - 1]?.id ?? null)
+    }
+    focusNextFrame(() => document.getElementById('os-task-window-' + id))
+  }
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      if (startOpen) {
+        event.preventDefault()
+        closeStartMenu()
+        return
+      }
+      if (active && windows[active].status === 'open') {
+        event.preventDefault()
+        closeWindow(active)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [active, closeStartMenu, closeWindow, startOpen, windows])
   const gestureStart = (event: ReactPointerEvent<HTMLElement>, id: WindowId, kind: Gesture['kind']) => {
     if (event.button !== 0 || windows[id].maximized || window.innerWidth <= 760) return
     event.preventDefault()
@@ -290,6 +367,15 @@ export default function PortfolioDesktop() {
     order.current = 13
     setActive('about')
     setStartOpen(false)
+    focusNextFrame(() => windowElements.current.about ?? null)
+  }
+  const toggleStartMenu = () => {
+    if (startOpen) {
+      closeStartMenu()
+      return
+    }
+    setStartOpen(true)
+    focusNextFrame(() => startMenuRef.current?.querySelector('button') ?? null)
   }
   const renderContent = (id: WindowId) => {
     switch (id) {
@@ -313,7 +399,7 @@ export default function PortfolioDesktop() {
       <div className="os-top-left"><span className="os-dot-online" /> WELCOME TO GUSTAVO OS <span className="os-top-version">v1.0</span></div>
       <nav className="os-desktop-icons" aria-label="Aplicativos na área de trabalho">
         {entries.map(({ id, label, icon: Icon }) => (
-          <button type="button" key={id} className="os-desktop-icon" onClick={() => openWindow(id)} onDoubleClick={() => openWindow(id)}><span className="os-icon-surface"><Icon size={27} strokeWidth={1.7} /></span><span>{label}</span></button>
+          <button type="button" id={'os-shortcut-' + id} aria-label={'Abrir ' + label} key={id} className="os-desktop-icon" onClick={(event) => openWindow(id, event.currentTarget)}><span className="os-icon-surface"><Icon size={27} strokeWidth={1.7} aria-hidden="true" /></span><span>{label}</span></button>
         ))}
       </nav>
       <aside className="os-widget-area" aria-label="Atalhos e informações">
@@ -327,9 +413,11 @@ export default function PortfolioDesktop() {
           return (
             <section
               key={id}
+              ref={(element) => { windowElements.current[id] = element }}
+              id={'os-window-' + id}
               role="dialog"
-              aria-label={label}
-              aria-modal={false}
+              aria-labelledby={'os-window-title-' + id}
+              tabIndex={-1}
               className={'os-window ' + (active === id ? 'os-window-active ' : '') + (win.maximized ? 'os-maximized' : '')}
               style={win.maximized ? { zIndex: win.z } : { left: win.x, top: win.y, width: win.width, height: win.height, zIndex: win.z }}
               onPointerDown={() => { if (active !== id) focusWindow(id) }}
@@ -338,35 +426,35 @@ export default function PortfolioDesktop() {
               onPointerCancel={gestureEnd}
             >
               <header className="os-window-title" onPointerDown={(event) => { if ((event.target as HTMLElement).closest('button')) return; gestureStart(event, id, 'move') }} onDoubleClick={() => changeWindow(id, { maximized: !win.maximized })}>
-                <span className="os-window-title-text"><Icon size={17} /> {label}<small>— Gustavo OS</small></span>
+                <span className="os-window-title-text" id={'os-window-title-' + id}><Icon size={17} aria-hidden="true" /> {label}<small>— Gustavo OS</small></span>
                 <span className="os-window-actions">
-                  <button aria-label={'Minimizar ' + label} onClick={() => changeWindow(id, { status: 'minimized' })}><Minus size={16} /></button>
-                  <button aria-label={(win.maximized ? 'Restaurar ' : 'Maximizar ') + label} onClick={() => changeWindow(id, { maximized: !win.maximized })}><Maximize2 size={14} /></button>
-                  <button aria-label={'Fechar ' + label} className="os-close" onClick={() => changeWindow(id, { status: 'closed' })}><X size={17} /></button>
+                  <button type="button" aria-label={'Minimizar ' + label} onClick={() => minimizeWindow(id)}><Minus size={16} aria-hidden="true" /></button>
+                  <button type="button" aria-label={(win.maximized ? 'Restaurar ' : 'Maximizar ') + label} onClick={() => changeWindow(id, { maximized: !win.maximized })}><Maximize2 size={14} aria-hidden="true" /></button>
+                  <button type="button" aria-label={'Fechar ' + label} className="os-close" onClick={() => closeWindow(id)}><X size={17} aria-hidden="true" /></button>
                 </span>
               </header>
               <div className="os-window-inner">{renderContent(id)}</div>
-              {!win.maximized && <span className="os-resize-grip" aria-label="Redimensionar janela" onPointerDown={(event) => gestureStart(event, id, 'resize')} />}
+              {!win.maximized && <span className="os-resize-grip" aria-hidden="true" onPointerDown={(event) => gestureStart(event, id, 'resize')} />}
             </section>
           )
         })}
       </div>
-      {startOpen && <div className="os-menu-backdrop" onClick={() => setStartOpen(false)} />}
-      {startOpen && <nav className="os-start-menu" aria-label="Menu Iniciar">
-        <div className="os-start-header"><span className="os-start-mark"><Grid2X2 size={22} /></span><div><strong>Gustavo OS</strong><small>Meu espaço na web</small></div></div>
+      {startOpen && <div className="os-menu-backdrop" aria-hidden="true" onClick={closeStartMenu} />}
+      {startOpen && <nav ref={startMenuRef} id="os-start-menu" className="os-start-menu" aria-label="Menu Iniciar">
+        <div className="os-start-header"><span className="os-start-mark"><Grid2X2 size={22} aria-hidden="true" /></span><div><strong>Gustavo OS</strong><small>Meu espaço na web</small></div><button type="button" className="os-start-close" aria-label="Fechar menu Iniciar" onClick={closeStartMenu}><X size={19} aria-hidden="true" /></button></div>
         <span className="os-eyebrow">APLICATIVOS</span>
-        <div className="os-start-grid">{entries.map(({ id, icon: Icon, label, subtitle }) => <button key={id} onClick={() => openWindow(id)}><Icon size={20} /><span><strong>{label}</strong><small>{subtitle}</small></span><ChevronRight size={15} /></button>)}</div>
+        <div className="os-start-grid">{entries.map(({ id, icon: Icon, label, subtitle }) => <button type="button" key={id} onClick={(event) => openWindow(id, event.currentTarget)}><Icon size={20} aria-hidden="true" /><span><strong>{label}</strong><small>{subtitle}</small></span><ChevronRight size={15} aria-hidden="true" /></button>)}</div>
         <div className="os-start-footer"><img src="/perfil.jpg" alt="" /><span>Gustavo Silveira Soares<small>Full Stack Developer</small></span><a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" aria-label="Abrir GitHub"><ExternalLink size={17} /></a></div>
       </nav>}
       <footer className="os-taskbar" aria-label="Barra de tarefas">
-        <button className={'os-start-button ' + (startOpen ? 'selected' : '')} onClick={() => setStartOpen(!startOpen)} aria-label="Abrir menu Iniciar" aria-expanded={startOpen}><Grid2X2 size={23} /><span>Iniciar</span></button>
+        <button ref={startButtonRef} type="button" className={'os-start-button ' + (startOpen ? 'selected' : '')} onClick={toggleStartMenu} aria-label="Abrir menu Iniciar" aria-expanded={startOpen} aria-controls={startOpen ? 'os-start-menu' : undefined}><Grid2X2 size={23} aria-hidden="true" /><span>Iniciar</span></button>
         <span className="os-taskbar-divider" />
         <nav className="os-running" aria-label="Janelas abertas">
-          {running.map(({ id, label, icon: Icon }) => <button key={id} onClick={() => (windows[id].status === 'open' && active === id ? changeWindow(id, { status: 'minimized' }) : openWindow(id))} className={windows[id].status === 'open' && active === id ? 'selected' : ''} aria-label={'Abrir ' + label} title={label}><Icon size={19} /><span>{label}</span><i /></button>)}
+          {running.map(({ id, label, icon: Icon }) => <button type="button" key={id} id={'os-task-window-' + id} onClick={(event) => (windows[id].status === 'open' && active === id ? minimizeWindow(id) : openWindow(id, event.currentTarget))} className={windows[id].status === 'open' && active === id ? 'selected' : ''} aria-current={windows[id].status === 'open' && active === id ? 'true' : undefined} aria-label={'Alternar janela ' + label} title={label}><Icon size={19} aria-hidden="true" /><span>{label}</span><i aria-hidden="true" /></button>)}
         </nav>
         <div className="os-system-tray">
-          <button onClick={() => setDark(!dark)} aria-label={dark ? 'Ativar tema claro' : 'Ativar tema escuro'} title="Alternar tema">{dark ? <Sun size={18} /> : <Moon size={18} />}</button>
-          <button onClick={resetLayout} title="Restaurar disposição" aria-label="Restaurar disposição das janelas"><RotateCcw size={18} /></button>
+          <button type="button" onClick={() => setDark(!dark)} aria-label={dark ? 'Ativar tema claro' : 'Ativar tema escuro'} title="Alternar tema">{dark ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}</button>
+          <button type="button" onClick={resetLayout} title="Restaurar disposição" aria-label="Restaurar disposição das janelas"><RotateCcw size={18} aria-hidden="true" /></button>
           <DesktopClock />
         </div>
       </footer>
@@ -374,9 +462,9 @@ export default function PortfolioDesktop() {
         {(['about', 'projects', 'experience', 'skills', 'contact'] as const).map((id) => {
           const item = entries.find((e) => e.id === id)!
           const Icon = item.icon
-          return <button key={id} className={windows[id].status === 'open' ? 'selected' : ''} onClick={() => openWindow(id)}><Icon size={21} /><span>{item.label}</span></button>
+          return <button type="button" key={id} className={windows[id].status === 'open' && active === id ? 'selected' : ''} aria-current={windows[id].status === 'open' && active === id ? 'true' : undefined} aria-label={'Abrir ' + item.label} onClick={(event) => openWindow(id, event.currentTarget)}><Icon size={21} aria-hidden="true" /><span>{item.label}</span></button>
         })}
-        <button onClick={() => setStartOpen(!startOpen)} aria-label="Mais opções"><Settings2 size={21} /><span>Mais</span></button>
+        <button type="button" onClick={toggleStartMenu} aria-label="Mais opções" aria-expanded={startOpen} aria-controls={startOpen ? 'os-start-menu' : undefined}><Settings2 size={21} aria-hidden="true" /><span>Mais</span></button>
       </nav>
       <span className="os-sr-only">Portfólio interativo de Gustavo Silveira Soares. Abra os atalhos para navegar.</span>
     </main>

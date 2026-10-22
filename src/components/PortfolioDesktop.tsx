@@ -5,7 +5,7 @@ import {
   Mail, MapPin, Maximize2, Minus, Moon, RotateCcw, Send,
   Settings2, Sun, Terminal, UserRound, X,
 } from 'lucide-react'
-import InteractivePortrait from './InteractivePortrait'
+import Gustavo3D from './Gustavo3D'
 import { WeatherWidget, GitHubWidget } from './DesktopWidgets'
 import { projects } from '../data/projects'
 import { experiences } from '../data/experience'
@@ -307,7 +307,7 @@ export default function PortfolioDesktop() {
     <main className={'os-root ' + (dark ? 'os-dark' : 'os-light')}>
       <div className="os-wallpaper" aria-hidden="true">
         <div className="os-heading-art"><span>SOFTWARE ENGINEER / PORTFOLIO 2026</span><strong>GUSTAVO<br />SILVEIRA<span>.</span></strong><p>Code. Design. Solve.</p></div>
-        <div className="os-portrait"><InteractivePortrait /></div>
+        <div className="os-portrait"><Gustavo3D /></div>
         <div className="os-wallpaper-caption">FULL STACK DEVELOPER <span>✳</span> SOROCABA, BR</div>
       </div>
       <div className="os-top-left"><span className="os-dot-online" /> WELCOME TO GUSTAVO OS <span className="os-top-version">v1.0</span></div>

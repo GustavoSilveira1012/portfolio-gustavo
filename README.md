@@ -1,4 +1,4 @@
-# Gustavo OS — portfólio interativo
+# Gustavo OS 2.0 — portfólio interativo
 
 Portfólio profissional de Gustavo Silveira Soares, apresentado como uma experiência de desktop no navegador.
 

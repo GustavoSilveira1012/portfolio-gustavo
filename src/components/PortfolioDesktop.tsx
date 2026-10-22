@@ -237,7 +237,7 @@ function ContactView() {
 
 function TerminalView({ onOpen }: { onOpen: (id: WindowId) => void }) {
   const [command, setCommand] = useState('')
-  const [history, setHistory] = useState<string[]>(['GustavoOS Terminal v1.0', 'Digite help para listar comandos disponíveis.'])
+  const [history, setHistory] = useState<string[]>(['GustavoOS Terminal v2.0', 'Digite help para listar comandos disponíveis.'])
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const cmd = command.trim().toLowerCase()
@@ -272,15 +272,16 @@ export default function PortfolioDesktop() {
   const windowElements = useRef<Partial<Record<WindowId, HTMLElement | null>>>({})
   const returnFocusElements = useRef<Partial<Record<WindowId, HTMLElement | null>>>({})
   const startMenuRef = useRef<HTMLElement | null>(null)
+  const startMenuTriggerRef = useRef<HTMLButtonElement | null>(null)
   const startButtonRef = useRef<HTMLButtonElement | null>(null)
   useEffect(() => { try { localStorage.setItem('gustavo-os-theme', dark ? 'dark' : 'light') } catch { /* unavailable in private mode */ } }, [dark])
   const closeStartMenu = useCallback(() => {
     setStartOpen(false)
-    focusNextFrame(() => startButtonRef.current)
+    focusNextFrame(() => startMenuTriggerRef.current?.isConnected ? startMenuTriggerRef.current : startButtonRef.current)
   }, [])
   const openWindow = (id: WindowId, trigger?: HTMLElement) => {
     const focusedElement = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null)
-    returnFocusElements.current[id] = startOpen ? startButtonRef.current : focusedElement
+    returnFocusElements.current[id] = startOpen ? startMenuTriggerRef.current ?? startButtonRef.current : focusedElement
     setWindows((previous) => {
       const next = { ...previous }
       if (window.innerWidth <= 760) {
@@ -369,11 +370,12 @@ export default function PortfolioDesktop() {
     setStartOpen(false)
     focusNextFrame(() => windowElements.current.about ?? null)
   }
-  const toggleStartMenu = () => {
+  const toggleStartMenu = (trigger: HTMLButtonElement) => {
     if (startOpen) {
       closeStartMenu()
       return
     }
+    startMenuTriggerRef.current = trigger
     setStartOpen(true)
     focusNextFrame(() => startMenuRef.current?.querySelector('button') ?? null)
   }
@@ -396,7 +398,7 @@ export default function PortfolioDesktop() {
         <div className="os-portrait"><Gustavo3D /></div>
         <div className="os-wallpaper-caption">FULL STACK DEVELOPER <span>✳</span> SOROCABA, BR</div>
       </div>
-      <div className="os-top-left"><span className="os-dot-online" /> WELCOME TO GUSTAVO OS <span className="os-top-version">v1.0</span></div>
+      <div className="os-top-left"><span className="os-dot-online" /> WELCOME TO GUSTAVO OS <span className="os-top-version">v2.0</span></div>
       <nav className="os-desktop-icons" aria-label="Aplicativos na área de trabalho">
         {entries.map(({ id, label, icon: Icon }) => (
           <button type="button" id={'os-shortcut-' + id} aria-label={'Abrir ' + label} key={id} className="os-desktop-icon" onClick={(event) => openWindow(id, event.currentTarget)}><span className="os-icon-surface"><Icon size={27} strokeWidth={1.7} aria-hidden="true" /></span><span>{label}</span></button>
@@ -447,7 +449,7 @@ export default function PortfolioDesktop() {
         <div className="os-start-footer"><img src="/perfil.jpg" alt="" /><span>Gustavo Silveira Soares<small>Full Stack Developer</small></span><a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" aria-label="Abrir GitHub"><ExternalLink size={17} /></a></div>
       </nav>}
       <footer className="os-taskbar" aria-label="Barra de tarefas">
-        <button ref={startButtonRef} type="button" className={'os-start-button ' + (startOpen ? 'selected' : '')} onClick={toggleStartMenu} aria-label="Abrir menu Iniciar" aria-expanded={startOpen} aria-controls={startOpen ? 'os-start-menu' : undefined}><Grid2X2 size={23} aria-hidden="true" /><span>Iniciar</span></button>
+        <button ref={startButtonRef} type="button" className={'os-start-button ' + (startOpen ? 'selected' : '')} onClick={(event) => toggleStartMenu(event.currentTarget)} aria-label="Abrir menu Iniciar" aria-expanded={startOpen} aria-controls={startOpen ? 'os-start-menu' : undefined}><Grid2X2 size={23} aria-hidden="true" /><span>Iniciar</span></button>
         <span className="os-taskbar-divider" />
         <nav className="os-running" aria-label="Janelas abertas">
           {running.map(({ id, label, icon: Icon }) => <button type="button" key={id} id={'os-task-window-' + id} onClick={(event) => (windows[id].status === 'open' && active === id ? minimizeWindow(id) : openWindow(id, event.currentTarget))} className={windows[id].status === 'open' && active === id ? 'selected' : ''} aria-current={windows[id].status === 'open' && active === id ? 'true' : undefined} aria-label={'Alternar janela ' + label} title={label}><Icon size={19} aria-hidden="true" /><span>{label}</span><i aria-hidden="true" /></button>)}
@@ -464,7 +466,7 @@ export default function PortfolioDesktop() {
           const Icon = item.icon
           return <button type="button" key={id} className={windows[id].status === 'open' && active === id ? 'selected' : ''} aria-current={windows[id].status === 'open' && active === id ? 'true' : undefined} aria-label={'Abrir ' + item.label} onClick={(event) => openWindow(id, event.currentTarget)}><Icon size={21} aria-hidden="true" /><span>{item.label}</span></button>
         })}
-        <button type="button" onClick={toggleStartMenu} aria-label="Mais opções" aria-expanded={startOpen} aria-controls={startOpen ? 'os-start-menu' : undefined}><Settings2 size={21} aria-hidden="true" /><span>Mais</span></button>
+        <button type="button" onClick={(event) => toggleStartMenu(event.currentTarget)} aria-label="Mais opções" aria-expanded={startOpen} aria-controls={startOpen ? 'os-start-menu' : undefined}><Settings2 size={21} aria-hidden="true" /><span>Mais</span></button>
       </nav>
       <span className="os-sr-only">Portfólio interativo de Gustavo Silveira Soares. Abra os atalhos para navegar.</span>
     </main>

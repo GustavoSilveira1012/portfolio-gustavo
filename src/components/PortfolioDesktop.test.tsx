@@ -70,6 +70,26 @@ describe('PortfolioDesktop navigation and project cases', () => {
     await waitFor(() => expect(startButton).toHaveFocus())
   })
 
+  it('returns focus to the mobile menu trigger after closing with Escape', async () => {
+    const originalWidth = Object.getOwnPropertyDescriptor(window, 'innerWidth')
+    Object.defineProperty(window, 'innerWidth', { configurable: true, writable: true, value: 390 })
+
+    try {
+      render(<PortfolioDesktop />)
+      const mobileTrigger = screen.getByRole('button', { name: 'Mais opções' })
+
+      fireEvent.click(mobileTrigger)
+      expect(screen.getByRole('navigation', { name: 'Menu Iniciar' })).toBeVisible()
+
+      fireEvent.keyDown(window, { key: 'Escape' })
+
+      await waitFor(() => expect(screen.queryByRole('navigation', { name: 'Menu Iniciar' })).not.toBeInTheDocument())
+      await waitFor(() => expect(mobileTrigger).toHaveFocus())
+    } finally {
+      if (originalWidth) Object.defineProperty(window, 'innerWidth', originalWidth)
+    }
+  })
+
   it('runs the about command and activates the About window', async () => {
     render(<PortfolioDesktop />)
     fireEvent.click(getShortcut('terminal'))

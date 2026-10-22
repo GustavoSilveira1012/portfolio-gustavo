@@ -1,186 +1,55 @@
-# Portfólio Profissional - Gustavo Silveira Soares
+# Gustavo OS — Portfolio interativo
 
-Um portfólio moderno, responsivo e de alta performance para um desenvolvedor Full Stack brasileiro. Desenvolvido com as tecnologias mais modernas do mercado.
+Portfolio profissional de Gustavo Silveira Soares, reconstruido como uma experiencia de **desktop OS** no navegador.
 
-## 🚀 Stack Tecnológico
+## Design
 
-- **React 18** - Biblioteca UI moderna
-- **TypeScript** - Tipagem estática para JavaScript
-- **Vite** - Build tool ultrarrápido
-- **TailwindCSS** - Utility-first CSS framework
-- **Framer Motion** - Animações fluidas e profissionais
-- **Lucide React** - Ícones modernos
-- **React Router** - Roteamento de aplicação
-- **Shadcn/ui** - Componentes acessíveis
+Inspirado no conceito de portfolio como sistema operacional apresentado por [Jonathan Bergamo](https://github.com/jonabergamo/jonathanbergamo). A implementacao foi escrita especificamente para este repositorio: identidade, CSS, conteudo e componentes proprios. Nenhum codigo ou asset de terceiros foi copiado.
 
-## ✨ Características
+## Funcionalidades
 
-- ✅ Design moderno com glassmorphism
-- ✅ Totalmente responsivo (mobile, tablet, desktop)
-- ✅ Animações suaves com Framer Motion
-- ✅ Dark mode elegante
-- ✅ Performance otimizada
-- ✅ SEO básico implementado
-- ✅ Formulário de contato funcional
-- ✅ Integração com redes sociais
-- ✅ Timeline de experiência
-- ✅ Galeria de projetos com filtros
-- ✅ Seção de certificados
-- ✅ Stack tecnológico com níveis de conhecimento
+- Area de trabalho com atalhos e menu Iniciar
+- Janelas com foco, arrastar, redimensionar, minimizar, maximizar e fechar (desktop)
+- Barra de tarefas com relogio, atalhos, reset de layout e alternancia de tema
+- Layout mobile com navegacao inferior e visualizacao de uma janela por vez
+- Secoes Sobre, Projetos, Experiencia, Tecnologias, Formacao, Contato e Terminal
+- Filtros de projetos, links para GitHub/demos, curriculos PT/EN e contatos reais
+- Avatar original com profundidade e movimento 3D via CSS; nao depende de assets de terceiros
+- Widget de clima atual de Sorocaba (Open-Meteo) com tratamento de erros
+- Widget GitHub com numeros publicos e fallback caso a API falhe
+- Suporte a preferencia por movimento reduzido
 
-## 📁 Estrutura do Projeto
+## Tecnologia
 
-```
-portfolio-gustavo/
-├── src/
-│   ├── components/          # Componentes reutilizáveis
-│   │   ├── Navbar.tsx
-│   │   ├── Hero.tsx
-│   │   ├── About.tsx
-│   │   ├── Stack.tsx
-│   │   ├── Projects.tsx
-│   │   ├── Experience.tsx
-│   │   ├── Certificates.tsx
-│   │   ├── Contact.tsx
-│   │   └── Footer.tsx
-│   ├── pages/              # Páginas da aplicação
-│   │   └── Home.tsx
-│   ├── data/               # Dados mockados
-│   │   ├── projects.ts
-│   │   ├── technologies.ts
-│   │   ├── experience.ts
-│   │   └── certificates.ts
-│   ├── App.tsx
-│   ├── App.css
-│   ├── main.tsx
-│   └── index.css
-├── index.html
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-├── tailwind.config.js
-├── postcss.config.js
-└── README.md
-```
+React 18, TypeScript, Vite, Tailwind CSS 3 e Lucide React. Sem novas dependencias.
 
-## 🛠️ Instalação e Uso
-
-### Pré-requisitos
-- Node.js 16+ instalado
-- npm ou yarn
-
-### Instalação
+## Iniciar
 
 ```bash
-# Clone o repositório
-git clone <seu-repositorio>
-
-# Navegue até o diretório
-cd portfolio-gustavo
-
-# Instale as dependências
-npm install
-```
-
-### Desenvolvimento
-
-```bash
-# Inicie o servidor de desenvolvimento
+npm ci
 npm run dev
 ```
 
-O projeto estará disponível em `http://localhost:5173`
-
-### Build para Produção
+## Validar
 
 ```bash
-# Crie a build otimizada
 npm run build
-
-# Visualize a build localmente
-npm run preview
+npm run lint
+npm run test:run
 ```
 
-## 📝 Customização
+GitHub Actions executa automaticamente build e testes em Pull Requests. Confira o resultado antes de realizar o merge. A fase 2 ainda requer verificacao visual em desktop e dispositivos moveis.
 
-### Dados Pessoais
+## Conteudo
 
-Edite os arquivos em `src/data/` para adicionar suas informações:
+- `src/data/projects.ts` — projetos
+- `src/data/experience.ts` — experiencia
+- `src/data/technologies.ts` — tecnologias
+- `src/data/certificates.ts` — certificados
+- `src/utils/constants.ts` — links sociais, contato, curriculos
+- `src/components/PortfolioDesktop.tsx` — interacao e janelas
+- `src/components/portfolio-desktop.css` — estilos e adaptacao mobile
 
-- **projects.ts** - Adicione seus projetos
-- **technologies.ts** - Atualize suas tecnologias
-- **experience.ts** - Adicione sua experiência profissional
-- **certificates.ts** - Adicione seus certificados
+## Creditos
 
-### Cores e Tema
-
-Customize as cores em `tailwind.config.js`:
-
-```javascript
-colors: {
-  primary: { /* suas cores */ },
-  accent: { /* suas cores */ },
-}
-```
-
-### Componentes
-
-Todos os componentes estão em `src/components/` e são facilmente customizáveis.
-
-## 🎨 Design System
-
-### Cores Principais
-- **Cyan**: #06b6d4
-- **Purple**: #a855f7
-- **Pink**: #ec4899
-- **Dark**: #0f172a
-
-### Tipografia
-- **Títulos**: Font-weight 700-900
-- **Corpo**: Font-weight 400-600
-- **Família**: System fonts (Apple, Segoe, etc)
-
-## 📱 Responsividade
-
-O projeto é totalmente responsivo com breakpoints:
-- Mobile: < 640px
-- Tablet: 640px - 1024px
-- Desktop: > 1024px
-
-## ⚡ Performance
-
-- Otimizado com Vite
-- Code splitting automático
-- Lazy loading de imagens
-- Minificação de CSS/JS
-- Compressão de assets
-
-## 🔐 Segurança
-
-- Proteção contra XSS
-- Validação de formulários
-- Headers de segurança
-- Dependências atualizadas
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT.
-
-## 👨‍💻 Autor
-
-**Gustavo Silveira Soares**
-- GitHub: [@gustavo](https://github.com)
-- LinkedIn: [Gustavo Silveira](https://linkedin.com)
-- Email: gustavo@example.com
-
-## 🤝 Contribuições
-
-Contribuições são bem-vindas! Sinta-se livre para abrir issues e pull requests.
-
-## 📞 Suporte
-
-Se tiver dúvidas ou sugestões, entre em contato através do formulário no portfólio ou envie um email.
-
----
-
-Feito com ❤️ e React
+Conceito de experiencia desktop inspirado no portfolio de Jonathan Bergamo. Layout e codigo desta implementacao adaptados ao portfolio de Gustavo.

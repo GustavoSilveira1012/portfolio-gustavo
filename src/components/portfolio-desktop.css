@@ -360,3 +360,24 @@
   .os-heading-art { top: 48px; }
   .os-heading-art p { white-space: normal; font-size: 11px; letter-spacing: .07em; }
 }
+
+
+/* Faithful 2.5D portrait: the person's real photo stays readable, never distorted into a fake face. */
+.os-photo-portrait { perspective: 1000px; display:grid; place-items:center; cursor:default; }
+.os-photo-halo { position:absolute; z-index:0; width:88%; aspect-ratio:1; left:7%; top:7%; border-radius:50%; border:3px solid color-mix(in srgb,var(--os-accent) 45%,transparent); background:radial-gradient(circle at 32% 28%, color-mix(in srgb,var(--os-accent) 30%,var(--os-paper)), transparent 66%); box-shadow:0 0 0 22px color-mix(in srgb,var(--os-accent) 5%,transparent),0 0 0 42px color-mix(in srgb,var(--os-accent) 4%,transparent); }
+.os-photo-depth { --portrait-rx:0deg; --portrait-ry:0deg; position:relative; width:82%; height:90%; transform-style:preserve-3d; transform:rotateX(var(--portrait-rx)) rotateY(var(--portrait-ry)); transition:transform 260ms ease-out; animation:os-photo-arrive .65s ease-out both; }
+@keyframes os-photo-arrive { from{opacity:0;translate:0 12px}to{opacity:1;translate:0 0} }
+.os-photo-underlay { position:absolute; inset:7% 0 4%; border:2px solid var(--os-border); border-radius:22px; background:var(--os-accent); transform:translate3d(14px,12px,-23px) rotate(5deg); }
+.os-photo-frame { position:absolute; inset:0 5% 6%; overflow:hidden; border:7px solid var(--os-paper); border-radius:22px; background:#243243; box-shadow:0 20px 35px rgba(0,0,0,.20),0 0 0 2px var(--os-border); transform:translateZ(22px) rotate(-3deg); }
+.os-photo-frame img { width:100%; height:100%; object-fit:cover; object-position:center 27%; display:block; }
+.os-photo-bottom-shade {position:absolute;bottom:0;left:0;right:0;height:30%;background:linear-gradient(transparent,rgba(0,0,0,.49));pointer-events:none;}
+.os-photo-photo-tag {position:absolute;left:15px;bottom:16px;font:800 10px ui-monospace,monospace;letter-spacing:.12em;color:white;text-shadow:0 1px 3px #000;}
+.os-photo-stamp {position:absolute;bottom:4%;right:-12%;display:flex;gap:10px;align-items:center;background:var(--os-taskbar);border:2px solid var(--os-paper);color:var(--os-task-text);padding:11px 14px;transform:translateZ(65px) rotate(5deg);box-shadow:5px 5px 0 color-mix(in srgb,var(--os-ink) 23%,transparent);}
+.os-photo-stamp strong,.os-photo-stamp small{display:block;}
+.os-photo-stamp strong{font-size:17px;letter-spacing:.13em;}
+.os-photo-stamp small{font:700 9px ui-monospace,monospace;letter-spacing:.12em;color:#a6e5e9;}
+.os-photo-stamp-spark{font-size:26px;color:#80d6da;}
+.os-photo-floating{position:absolute;color:var(--os-accent);font-size:42px;font-weight:900;transform:translateZ(50px);pointer-events:none;}
+.os-photo-floating-a{top:4%;right:-13%}.os-photo-floating-b{bottom:20%;left:-14%;font-size:25px;}
+@media(max-width:760px){.os-photo-depth{width:90%;height:87%}.os-photo-stamp{right:-6%;padding:6px 8px;gap:5px}.os-photo-stamp strong{font-size:10px}.os-photo-stamp small{font-size:6px}.os-photo-stamp-spark{font-size:16px}.os-photo-frame{border-width:4px}.os-photo-photo-tag{font-size:7px}}
+@media(prefers-reduced-motion:reduce){.os-photo-depth{transform:none!important;transition:none!important;animation:none!important}}
